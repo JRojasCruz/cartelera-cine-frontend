@@ -1,0 +1,48 @@
+<section class="detalle">
+  <div *ngIf="loading" class="loading">
+    <p>Cargando detalles de la película...</p>
+  </div>
+
+  <div *ngIf="!loading && pelicula" class="detalle-card">
+    <button class="volver" routerLink="/">← Volver a cartelera</button>
+
+    <div class="encabezado">
+      <div class="info">
+        <h2>{{ pelicula.titulo }}</h2>
+        <p class="genero">{{ pelicula.genero }}</p>
+        <p class="duracion">{{ pelicula.duracion }} min</p>
+        <p class="sinopsis">{{ pelicula.sinopsis }}</p>
+      </div>
+      <div class="imagen" *ngIf="pelicula.imagenUrl">
+        <img [src]="pelicula.imagenUrl" alt="{{ pelicula.titulo }}" />
+      </div>
+    </div>
+
+    <div class="funciones">
+      <h3>Funciones disponibles</h3>
+
+      <div *ngIf="tieneFunciones; else noFunciones">
+        <div class="funcion" *ngFor="let funcion of pelicula.funciones">
+          <p><strong>Sala:</strong> {{ funcion.salaNombre }}</p>
+          <p>
+            <strong>Fecha:</strong>
+            {{ funcion.horaInicio | date : "dd/MM/yyyy" : "es-ES" }}
+          </p>
+          <p>
+            <strong>Inicio:</strong>
+            {{ funcion.horaInicio | date : "shortTime" }}
+          </p>
+          <p>
+            <strong>Fin:</strong> {{ funcion.horaFin | date : "shortTime" }}
+          </p>
+          <p><strong>Capacidad:</strong> {{ funcion.capacidad }}</p>
+          <button [routerLink]="['/reserva', funcion.id]">Reservar</button>
+        </div>
+      </div>
+
+      <ng-template #noFunciones>
+        <p>No hay funciones disponibles para esta película.</p>
+      </ng-template>
+    </div>
+  </div>
+</section>

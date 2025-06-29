@@ -1,0 +1,84 @@
+<section class="reserva">
+  <h2>Reserva de Entrada</h2>
+
+  <button [routerLink]="['/pelicula', peliculaId]" class="volver">
+    ← Volver al detalle
+  </button>
+
+  <div *ngIf="funcion">
+    <p><strong>Pelicula:</strong> {{ funcion.peliculaTitulo }}</p>
+    <p><strong>Sala:</strong> {{ funcion.salaNombre }}</p>
+    <p>
+      <strong>Hora:</strong>
+      {{ funcion.horaInicio | date : "dd/MM/yyyy h:mm a" }}
+    </p>
+  </div>
+
+  <form [formGroup]="reservaForm" (ngSubmit)="reservar()">
+    <label>Nombres</label>
+    <input type="text" formControlName="nombres" />
+
+    <label>Apellidos</label>
+    <input type="text" formControlName="apellidos" />
+
+    <label>Fecha de Nacimiento</label>
+    <input type="date" formControlName="fechaNacimiento" />
+
+    <label>Género</label>
+    <select formControlName="genero">
+      <option value="">Seleccione</option>
+      <option value="M">Masculino</option>
+      <option value="F">Femenino</option>
+    </select>
+
+    <label>Tipo de Documento</label>
+    <!-- <input type="text" formControlName="tipoDocumento" /> -->
+    <select formControlName="tipoDocumento">
+      <option value="">Seleccione</option>
+      <option value="DNI">DNI</option>
+      <option value="CE">Carnet de Extranjería</option>
+    </select>
+
+    <label>N° de Documento</label>
+    <input type="text" formControlName="numeroDocumento" />
+
+    <label>Email</label>
+    <input type="email" formControlName="email" />
+
+    <label>Teléfono</label>
+    <input type="tel" formControlName="telefono" />
+
+    <button type="submit" [disabled]="reservaForm.invalid">
+      Confirmar Reserva
+    </button>
+  </form>
+
+  <p *ngIf="enviado" class="confirmacion">🎟 Reserva realizada con éxito</p>
+  <dialog #modal class="modal">
+    <div class="modal-content">
+      <h3>🎟 Reserva Confirmada</h3>
+      <p><strong>Ticket:</strong> {{ reservaConfirmada?.numeroTicket }}</p>
+      <p>
+        <strong>Nombre:</strong> {{ reservaConfirmada?.nombres }}
+        {{ reservaConfirmada?.apellidos }}
+      </p>
+      <p><strong>Email:</strong> {{ reservaConfirmada?.email }}</p>
+      <p><strong>Teléfono:</strong> {{ reservaConfirmada?.telefono }}</p>
+      <hr />
+      <p><strong>Película:</strong> {{ reservaConfirmada?.peliculaTitulo }}</p>
+      <p><strong>Sala:</strong> {{ reservaConfirmada?.salaNombre }}</p>
+      <p>
+        <strong>Horario:</strong>
+        {{ reservaConfirmada?.horaInicio | date : "dd/MM/yyyy" }}
+      </p>
+      <p>
+        <strong>Fecha de Reserva:</strong>
+        {{ reservaConfirmada?.fechaReserva | date : "dd/MM/yyyy" }}
+      </p>
+
+      <button (click)="cerrarModal()">Cerrar</button>
+    </div>
+  </dialog>
+
+  <p *ngIf="error" class="error">{{ error }}</p>
+</section>
